@@ -68,12 +68,13 @@
             // label2
             // 
             label2.BackColor = SystemColors.ButtonFace;
-            label2.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label2.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label2.ForeColor = Color.Red;
             label2.Location = new Point(13, 8);
             label2.Name = "label2";
             label2.Size = new Size(623, 57);
             label2.TabIndex = 3;
-            label2.Text = "Please enable USB debugging mode before use this tool   First select your Region then click the play button";
+            label2.Text = "Please enable USB debugging mode before use this tool  &&  First select customer Region && Age then click the play button";
             label2.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // button2
@@ -95,11 +96,9 @@
             comboBoxDistrict.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxDistrict.FormattingEnabled = true;
             comboBoxDistrict.ImeMode = ImeMode.On;
-            comboBoxDistrict.Items.AddRange(new object[] { "Bagerhat                           ", "Bandarban                          ", "Barguna                       ", "Barisal                       ", "Bhola                              ", "Bogra                              ", "Brahmanbaria                       ", "Chandpur                           ", "Chittagong                         ", "Chuadanga                          ", "Comilla                            ", "Cox''s Bazar                       ", "Dhaka", "Dinajpur                           ", "Faridpur", "Feni                               ", "Gaibandha                          ", "Gazipur", "Gopalganj", "Habiganj                           ", "Jamalpur", "Jessore                            ", "Jhalokati                          ", "Jhenaidah                          ", "Joypurhat                         ", "Khagrachari                        ", "Khulna                             ", "Kishoreganj", "Kurigram                           ", "Kushtia                             ", "Lakshmipur                         ", "Lalmonirhat                        ", "Madaripur", "Magura                             ", "Manikganj", "Maulvibazar                        ", "Meherpur                           ", "Munshiganj", "Mymensingh", "Naogaon                      ", "Narail                             ", "Narayanganj", "Narsingdi", "Natore                             ", "Nawabganj                          ", "Netrokona", "Nilphamari                         ", "Noakhali                           ", "Pabna                              ", "Panchagarh                         ", "Patuakhali                         ", "Pirojpur                          ", "Rajbari", "Rajshahi                         ", "Rangamati                          ", "Rangpur                            ", "Satkhira", "Shariatpur", "Sherpur", "Sirajgonj                           ", "Sunamganj                          ", "Sylhet                             ", "Tangail                         ", "Thakurgaon                         " });
             comboBoxDistrict.Location = new Point(12, 101);
             comboBoxDistrict.Name = "comboBoxDistrict";
             comboBoxDistrict.Size = new Size(121, 23);
-            comboBoxDistrict.Sorted = true;
             comboBoxDistrict.TabIndex = 5;
             comboBoxDistrict.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
@@ -125,13 +124,15 @@
             // 
             // comboBox
             // 
+            comboBox.DropDownHeight = 120;
             comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox.FormattingEnabled = true;
             comboBox.ImeMode = ImeMode.On;
+            comboBox.IntegralHeight = false;
+            comboBox.ItemHeight = 15;
             comboBox.Location = new Point(156, 102);
             comboBox.Name = "comboBox";
             comboBox.Size = new Size(121, 23);
-            comboBox.Sorted = true;
             comboBox.TabIndex = 9;
             // 
             // Form1
@@ -153,7 +154,7 @@
             MaximizeBox = false;
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Digital Welbing Data";
+            Text = "DIGITAL WELBEING DATA";
             Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();

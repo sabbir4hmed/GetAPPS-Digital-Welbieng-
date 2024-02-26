@@ -13,6 +13,13 @@ namespace GetAPPS
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99", "100", "101", "102", "103", "104", "105", "106", "107", "108", "109", "110", "111", "112", "113", "114", "115", "116", "117", "118", "119", "120", "121", "122", "123", "124", "125", "126", "127", "128", "129", "130", "131", "132", "133", "134", "135", "136", "137", "138", "139", "140", "141", "142", "143", "144", "145", "146", "147", "148", "149", "150", "151", "152", "153", "154", "155", "156", "157", "158", "159", "160", "161", "162", "163", "164", "165", "166", "167", "168", "169", "170", "171", "172", "173", "174", "175", "176", "177", "178", "179", "180", "181", "182", "183", "184", "185", "186", "187", "188", "189", "190", "191", "192", "193", "194", "195", "196", "197", "198", "199", "200"
         };
 
+        private readonly string[] districts =
+        {
+            "Bagerhat", "Bandarban", "Barguna", "Barisal", "Bhola", "Bogra", "Brahmanbaria", "Chandpur", "Chittagong", "Chuadanga", "Comilla", "Cox''s Bazar", "Dhaka", "Dinajpur", "Faridpur", "Feni", "Gaibandha", "Gazipur", "Gopalganj", "Habiganj", "Jamalpur", "Jessore", "Jhalokati", "Jhenaidah", "Joypurhat", "Khagrachari", "Khulna", "Kishoreganj", "Kurigram", "Kushtia", "Lakshmipur", "Lalmonirhat", "Madaripur", "Magura", "Manikganj", "Maulvibazar", "Meherpur", "Munshiganj", "Mymensingh", "Naogaon", "Narail", "Narayanganj", "Narsingdi", "Natore", "Nawabganj", "Netrokona", "Nilphamari", "Noakhali", "Pabna", "Panchagarh", "Patuakhali", "Pirojpur", "Rajbari", "Rajshahi", "Rangamati", "Rangpur", "Satkhira", "Shariatpur", "Sherpur", "Sirajgonj", "Sunamganj", "Sylhet", "Tangail", "Thakurgaon"
+        };
+
+
+
         public Form1()
         {
             InitializeComponent();
@@ -20,19 +27,23 @@ namespace GetAPPS
             comboBox.Items.AddRange(numbers);
             Array.Sort(numbers);
             comboBox.KeyPress += ComboBox_KeyPress;
+            comboBoxDistrict.Items.AddRange(districts);
+            Array.Sort(districts);
+            comboBoxDistrict.KeyPress += ComboBox_KeyPress;
           
         }
 
         private void ComboBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Find the first item starting with the pressed key
-            var index = Array.FindIndex(numbers, number => number.StartsWith(e.KeyChar.ToString(), StringComparison.InvariantCultureIgnoreCase));
+            var selectedItem = numbers.FirstOrDefault(number => number.Equals(e.KeyChar.ToString()));
 
             // If found, select the item and scroll to it
-            if (index != -1)
+            if (selectedItem != null)
             {
-                comboBox.SelectedIndex = index;
+                comboBox.SelectedItem = selectedItem;
                 comboBox.Select();
+
             }
 
             //throw new NotImplementedException();
@@ -62,7 +73,7 @@ namespace GetAPPS
                 // Get the selected district from the dropdown
                 string selectedDistrict = comboBoxDistrict.SelectedItem.ToString();
 
-                string seletednumber = comboBox.SelectedIndex.ToString();
+                string seletednumber = comboBox.SelectedItem.ToString();
 
                 comboBoxDistrict.KeyPress += ComboBoxDistrict_KeyPress;
 
@@ -89,7 +100,7 @@ namespace GetAPPS
                 }
 
                 // Save the app list to a text file on the desktop
-                string fileName = $"{deviceModel}_{serialNumber}_{selectedDistrict}_AppList.txt";
+                string fileName = $"{deviceModel}_{serialNumber}_District_{selectedDistrict}_Age_{seletednumber}_AppList.txt";
                 // Combine folder path with file name
                 string filePath = Path.Combine(folderPath, fileName);
 
@@ -114,17 +125,19 @@ namespace GetAPPS
         private void ComboBoxDistrict_KeyPress(object sender, KeyPressEventArgs e)
         {
 
-            var index = comboBoxDistrict.SelectedIndex;
+            // Find the first item starting with the pressed key
+            var index = Array.FindIndex(districts, district => district.StartsWith(e.KeyChar.ToString(), StringComparison.InvariantCultureIgnoreCase));
 
             // If found, select the item and scroll to it
             if (index != -1)
             {
                 comboBoxDistrict.SelectedIndex = index;
                 comboBoxDistrict.Select();
+                
             }
 
 
-           // throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
         private string ExecuteAdbCommand(string arguments)
