@@ -1,5 +1,7 @@
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Globalization;
+using System.Net;
 
 namespace GetAPPS
 {
@@ -27,8 +29,19 @@ namespace GetAPPS
                 string deviceModel = deviceInfoOutput.Replace(" ", "_");
                 string serialNumber = serialNumberOutput.Replace(" ", "_");
 
-                // Get the country or region of the PC
-                string countryRegion = GetCountryRegion();
+                // Get the latitude and longitude using a web service
+                string latitude = "";
+                string longitude = "";
+
+                using (WebClient wc = new WebClient())
+                {
+                    string response = wc.DownloadString("http://ip-api.com/json/");
+                    JObject json = JObject.Parse(response);
+                    latitude = json["lat"].ToString();
+                    longitude = json["lon"].ToString();
+                }
+
+               string placename = Getplacename(longitude, latitude);
 
                 // Execute ADB command to get list of installed third-party applications
                 string appListOutput = ExecuteAdbCommand("shell pm list packages -3");
@@ -43,14 +56,14 @@ namespace GetAPPS
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
                 // Create folder for the device model if it doesn't exist
-                string folderPath = Path.Combine(desktopPath, $"{deviceModel}_{countryRegion}");
+                string folderPath = Path.Combine(desktopPath, $"{deviceModel}_{placename}");
                 if (!Directory.Exists(folderPath))
                 {
                     Directory.CreateDirectory(folderPath);
                 }
 
                 // Save the app list to a text file on the desktop
-                string fileName = $"{deviceModel}_{serialNumber}_{countryRegion}_AppList.txt";
+                string fileName = $"{deviceModel}_{serialNumber}_{latitude}_{longitude}_AppList.txt";
                 // Combine folder path with file name
                 string filePath = Path.Combine(folderPath, fileName);
                 
@@ -72,12 +85,37 @@ namespace GetAPPS
             }
         }
 
-        private string GetCountryRegion()
+        private string Getplacename(string longitude, string latitude)
         {
+            //string apiKey = "AIzaSyAMeQ5jkhgFPgwyHxdObkeQ0LoVagCLrBs"; // Replace with your actual API key
+            string apiKey = "AIzaSyArg3tjawe0G5pKVX5kPb84-V2jdAPat1o"; // Replace with your actual API key
+            string apiUrl = $"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={latitude},{longitude}&inputtype=textquery&fields=name&key={apiKey}";
 
-            RegionInfo region = RegionInfo.CurrentRegion;
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response = client.GetAsync(apiUrl).Result;
 
-            return region.DisplayName.Replace(" ", "_");
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = response.Content.ReadAsStringAsync().Result;
+                    JObject json = JObject.Parse(responseBody);
+
+                    // Check if the response contains a valid result
+                    if (json["candidates"] != null && json["candidates"].HasValues)
+                    {
+                        string placeName = json["candidates"][0]["name"].ToString();
+                        return placeName;
+                    }
+                    else
+                    {
+                        return "Unknown";
+                    }
+                }
+                else
+                {
+                    return "Unknown";
+                }
+            }
 
             //throw new NotImplementedException();
         }
