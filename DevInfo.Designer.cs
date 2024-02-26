@@ -89,7 +89,7 @@
             MaximizeBox = false;
             Name = "DevInfo";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "DevInfo";
+            Text = "About Info";
             ResumeLayout(false);
         }
 
