@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Globalization;
 
 namespace GetAPPS
 {
@@ -26,6 +27,9 @@ namespace GetAPPS
                 string deviceModel = deviceInfoOutput.Replace(" ", "_");
                 string serialNumber = serialNumberOutput.Replace(" ", "_");
 
+                // Get the country or region of the PC
+                string countryRegion = GetCountryRegion();
+
                 // Execute ADB command to get list of installed third-party applications
                 string appListOutput = ExecuteAdbCommand("shell pm list packages -3");
 
@@ -35,10 +39,21 @@ namespace GetAPPS
                     return;
                 }
 
-                // Save the app list to a text file on the desktop
-                string fileName = $"{deviceModel}_{serialNumber}_AppList.txt";
+                // Get desktop path
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                string filePath = Path.Combine(desktopPath, fileName);
+
+                // Create folder for the device model if it doesn't exist
+                string folderPath = Path.Combine(desktopPath, $"{deviceModel}_{countryRegion}");
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                // Save the app list to a text file on the desktop
+                string fileName = $"{deviceModel}_{serialNumber}_{countryRegion}_AppList.txt";
+                // Combine folder path with file name
+                string filePath = Path.Combine(folderPath, fileName);
+                
 
                 using (StreamWriter writer = new StreamWriter(filePath))
                 {
@@ -57,13 +72,23 @@ namespace GetAPPS
             }
         }
 
+        private string GetCountryRegion()
+        {
+
+            RegionInfo region = RegionInfo.CurrentRegion;
+
+            return region.DisplayName.Replace(" ", "_");
+
+            //throw new NotImplementedException();
+        }
+
         private string ExecuteAdbCommand(string arguments)
         {
             using (Process process = new Process())
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
-                    FileName = "adb",
+                    FileName = "adb.exe",
                     Arguments = arguments,
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
