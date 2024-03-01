@@ -154,7 +154,7 @@
             MaximizeBox = false;
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "DIGITAL WELBEING DATA";
+            Text = "DIGITAL WELLBEING DATA";
             Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();

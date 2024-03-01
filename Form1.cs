@@ -30,7 +30,7 @@ namespace GetAPPS
             comboBoxDistrict.Items.AddRange(districts);
             Array.Sort(districts);
             comboBoxDistrict.KeyPress += ComboBox_KeyPress;
-          
+
         }
 
         private void ComboBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -133,7 +133,7 @@ namespace GetAPPS
             {
                 comboBoxDistrict.SelectedIndex = index;
                 comboBoxDistrict.Select();
-                
+
             }
 
 
