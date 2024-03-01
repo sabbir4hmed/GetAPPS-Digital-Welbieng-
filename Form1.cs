@@ -100,7 +100,7 @@ namespace GetAPPS
                 }
 
                 // Save the app list to a text file on the desktop
-                string fileName = $"{deviceModel}_{serialNumber}_District_{selectedDistrict}_Age_{seletednumber}_AppList.txt";
+                string fileName = $"{deviceModel}_{serialNumber}_District_{selectedDistrict}_Age_{seletednumber}.txt";
                 // Combine folder path with file name
                 string filePath = Path.Combine(folderPath, fileName);
 
